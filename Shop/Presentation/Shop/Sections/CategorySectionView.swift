@@ -24,8 +24,6 @@ struct CategorySectionView: View {
             ZStack(alignment: .center) {
                 Circle()
                     .fill(.primaryLightest)
-                
-                Circle()
                     .stroke(.primaryLight, lineWidth: 1)
                 
                 AsyncImage(url: category.iconURL) { image in

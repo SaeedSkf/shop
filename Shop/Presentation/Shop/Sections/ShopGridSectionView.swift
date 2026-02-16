@@ -11,9 +11,7 @@ struct ShopGridSectionView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text(section.title)
-                .font(.appHeadline)
-                .padding(.horizontal)
+            SectionHeaderView(title: section.title, actionTitleKey: "see_all", action: {})
 
             LazyVGrid(columns: columns, spacing: 16) {
                 ForEach(section.shops) { shop in
@@ -26,21 +24,27 @@ struct ShopGridSectionView: View {
 
     private func shopItem(_ shop: ShopItem) -> some View {
         VStack(spacing: 8) {
-            AsyncImage(url: shop.iconURL) { image in
-                image
-                    .resizable()
-                    .scaledToFit()
-            } placeholder: {
+            ZStack(alignment: .center) {
                 RoundedRectangle(cornerRadius: 12)
-                    .fill(.quaternary)
+                    .fill(.deactiveGray)
+                    .stroke(.deviderGray, lineWidth: 1)
+                
+                AsyncImage(url: shop.iconURL) { image in
+                    image
+                        .resizable()
+                        .scaledToFit()
+                        .padding(12)
+                } placeholder: {
+                    ProgressView()
+                }
             }
-            .frame(width: 56, height: 56)
-            .clipShape(RoundedRectangle(cornerRadius: 12))
-
+            .aspectRatio(1, contentMode: .fit)
+            
             Text(shop.title)
-                .font(.appCaption2)
-                .lineLimit(2)
-                .multilineTextAlignment(.center)
+                .font(.appSubtitle1)
+                .foregroundStyle(.darkGray)
+                .lineLimit(1)
+                .truncationMode(.tail)
         }
     }
 }
