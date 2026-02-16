@@ -8,9 +8,7 @@ struct FixedBannerSectionView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text(section.title)
-                .font(.appHeadline)
-                .padding(.horizontal)
+            SectionHeaderView(title: section.title)
 
             Group {
                 switch section.banners.count {
@@ -49,51 +47,69 @@ struct FixedBannerSectionView: View {
 
     // MARK: - 3 Items: Large right + two stacked left
 
-    private let totalHeight: CGFloat = 260
-
     private var threeItemsLayout: some View {
-        HStack(spacing: spacing) {
-            bannerImage(section.banners[0])
-                .frame(height: totalHeight)
+        GeometryReader { geometry in
+            let totalWidth = geometry.size.width
+            let halfWidth = (totalWidth - spacing) / 2
+            let totalHeight = geometry.size.height
+            let halfHeight = (totalHeight - spacing) / 2
 
-            VStack(spacing: spacing) {
-                bannerImage(section.banners[1])
-                    .frame(height: (totalHeight - spacing) / 2)
-                bannerImage(section.banners[2])
-                    .frame(height: (totalHeight - spacing) / 2)
+            HStack(spacing: spacing) {
+                bannerImage(section.banners[0])
+                    .frame(width: halfWidth, height: totalHeight)
+
+                VStack(spacing: spacing) {
+                    bannerImage(section.banners[1])
+                        .frame(width: halfWidth, height: halfHeight)
+                    bannerImage(section.banners[2])
+                        .frame(width: halfWidth, height: halfHeight)
+                }
             }
         }
-        .frame(height: totalHeight)
+        .aspectRatio(1.2, contentMode: .fit)
     }
 
     // MARK: - 4 Items: 2x2 Grid
 
     private var fourItemsLayout: some View {
-        let columns = [
-            GridItem(.flexible(), spacing: spacing),
-            GridItem(.flexible(), spacing: spacing)
-        ]
+        GeometryReader { geometry in
+            let totalWidth = geometry.size.width
+            let halfWidth = (totalWidth - spacing) / 2
+            let totalHeight = geometry.size.height
+            let halfHeight = (totalHeight - spacing) / 2
 
-        return LazyVGrid(columns: columns, spacing: spacing) {
-            ForEach(section.banners) { banner in
-                bannerImage(banner)
-                    .aspectRatio(1.5, contentMode: .fit)
+            VStack(spacing: spacing) {
+                HStack(spacing: spacing) {
+                    bannerImage(section.banners[0])
+                        .frame(width: halfWidth, height: halfHeight)
+                    bannerImage(section.banners[1])
+                        .frame(width: halfWidth, height: halfHeight)
+                }
+                HStack(spacing: spacing) {
+                    bannerImage(section.banners[2])
+                        .frame(width: halfWidth, height: halfHeight)
+                    bannerImage(section.banners[3])
+                        .frame(width: halfWidth, height: halfHeight)
+                }
             }
         }
+        .aspectRatio(1.0, contentMode: .fit)
     }
 
     // MARK: - Shared Banner Image
 
     private func bannerImage(_ banner: Banner) -> some View {
-        AsyncImage(url: banner.imageURL) { image in
-            image
-                .resizable()
-                .scaledToFill()
-        } placeholder: {
-            RoundedRectangle(cornerRadius: 12)
-                .fill(.quaternary)
-        }
-        .clipped()
-        .clipShape(RoundedRectangle(cornerRadius: 12))
+        Color.clear
+            .overlay {
+                AsyncImage(url: banner.imageURL) { image in
+                    image
+                        .resizable()
+                        .scaledToFill()
+                } placeholder: {
+                    RoundedRectangle(cornerRadius: 12)
+                        .fill(.primaryLight)
+                }
+            }
+            .clipShape(RoundedRectangle(cornerRadius: 12))
     }
 }

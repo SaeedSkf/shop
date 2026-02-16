@@ -11,24 +11,27 @@ struct BannerSectionView: View {
             ScrollView(.horizontal, showsIndicators: false) {
                 LazyHStack(spacing: 0) {
                     ForEach(section.banners) { banner in
-                        AsyncImage(url: banner.imageURL) { image in
-                            image
-                                .resizable()
-                                .scaledToFit()
-                        } placeholder: {
-                            RoundedRectangle(cornerRadius: 12)
-                                .fill(.quaternary)
-                                .aspectRatio(2.5, contentMode: .fit)
-                        }
-                        .clipShape(RoundedRectangle(cornerRadius: 12))
-                        .padding(.horizontal, 16)
-                        .containerRelativeFrame(.horizontal)
+                        Color.clear
+                            .overlay {
+                                AsyncImage(url: banner.imageURL) { image in
+                                    image
+                                        .resizable()
+                                        .scaledToFill()
+                                } placeholder: {
+                                    RoundedRectangle(cornerRadius: 12)
+                                        .fill(.quaternary)
+                                }
+                            }
+                            .clipShape(RoundedRectangle(cornerRadius: 12))
+                            .padding(.horizontal, 16)
+                            .containerRelativeFrame(.horizontal)
                     }
                 }
                 .scrollTargetLayout()
             }
             .scrollTargetBehavior(.viewAligned)
             .scrollPosition(id: $currentBannerID)
+            .aspectRatio(3, contentMode: .fit)
 
             pageIndicator
         }
