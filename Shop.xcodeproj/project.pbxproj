@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		30631ABB2F42E78400DA50BA /* Swinject in Frameworks */ = {isa = PBXBuildFile; productRef = 30631A512F42E20000DA50BA /* Swinject */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		30631A2A2F42E1ED00DA50BA /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -52,6 +56,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				30631ABB2F42E78400DA50BA /* Swinject in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -112,6 +117,7 @@
 			);
 			name = Shop;
 			packageProductDependencies = (
+				30631A512F42E20000DA50BA /* Swinject */,
 			);
 			productName = Shop;
 			productReference = 30631A1A2F42E1EB00DA50BA /* Shop.app */;
@@ -195,6 +201,9 @@
 			);
 			mainGroup = 30631A112F42E1EB00DA50BA;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				30631A502F42E20000DA50BA /* XCRemoteSwiftPackageReference "Swinject" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 30631A1B2F42E1EB00DA50BA /* Products */;
 			projectDirPath = "";
@@ -578,6 +587,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		30631A502F42E20000DA50BA /* XCRemoteSwiftPackageReference "Swinject" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Swinject/Swinject.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.9.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		30631A512F42E20000DA50BA /* Swinject */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 30631A502F42E20000DA50BA /* XCRemoteSwiftPackageReference "Swinject" */;
+			productName = Swinject;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 30631A122F42E1EB00DA50BA /* Project object */;
 }
