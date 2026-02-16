@@ -1,6 +1,6 @@
 import Foundation
 
-struct ProductGridSection: ShopSection {
+struct ShopGridSection: ShopSection {
     let id: String
     let title: String
     let shops: [ShopItem]
