@@ -37,7 +37,7 @@
 		30631A562F42E20000DA50BA /* Exceptions for "Shop" folder in "Shop" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				Info.plist,
+				Assets/Info.plist,
 			);
 			target = 30631A192F42E1EB00DA50BA /* Shop */;
 		};
@@ -423,7 +423,7 @@
 				DEVELOPMENT_TEAM = M88NZFL39G;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Shop/Info.plist;
+				INFOPLIST_FILE = Shop/Assets/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -457,7 +457,7 @@
 				DEVELOPMENT_TEAM = M88NZFL39G;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Shop/Info.plist;
+				INFOPLIST_FILE = Shop/Assets/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
