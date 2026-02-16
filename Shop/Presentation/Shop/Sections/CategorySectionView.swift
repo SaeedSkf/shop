@@ -5,13 +5,11 @@ struct CategorySectionView: View {
     let section: CategorySection
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            Text(section.title)
-                .font(.appHeadline)
-                .padding(.horizontal)
+        VStack(alignment: .leading, spacing: 16) {
+            SectionHeaderView(title: section.title, actionTitleKey: "see_all", action: {})
 
             ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 20) {
+                HStack(spacing: 8) {
                     ForEach(section.categories) { category in
                         categoryItem(category)
                     }
@@ -23,22 +21,31 @@ struct CategorySectionView: View {
 
     private func categoryItem(_ category: Category) -> some View {
         VStack(spacing: 8) {
-            AsyncImage(url: category.iconURL) { image in
-                image
-                    .resizable()
-                    .scaledToFit()
-            } placeholder: {
+            ZStack(alignment: .center) {
                 Circle()
-                    .fill(.quaternary)
+                    .fill(.primaryLightest)
+                
+                Circle()
+                    .stroke(.primaryLight, lineWidth: 1)
+                
+                AsyncImage(url: category.iconURL) { image in
+                    image
+                        .resizable()
+                        .scaledToFit()
+                } placeholder: {
+                    ProgressView()
+                }
+                .frame(width: 50, height: 50)
             }
-            .frame(width: 56, height: 56)
-            .clipShape(Circle())
-
+            .frame(height: 72)
+            
             Text(category.title)
-                .font(.appCaption)
-                .lineLimit(2)
-                .multilineTextAlignment(.center)
+                .font(.appSubtitle1)
+                .foregroundStyle(.primary)
+                .lineLimit(1)
+                .truncationMode(.tail)
         }
         .frame(width: 72)
     }
 }
+

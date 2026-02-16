@@ -30,6 +30,10 @@ extension Font {
     static var appTitle3: Font {
         appFont(.bold, size: 18)
     }
+    
+    static var appSubtitle1: Font {
+        appFont(.bold, size: 12)
+    }
 
     // MARK: - Headline / Subheadline
 
