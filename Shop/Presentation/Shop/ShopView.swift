@@ -1,13 +1,9 @@
-//
-//  ContentView.swift
-//  Shop
-//
-//  Created by Saeed on 2/16/26.
-//
-
 import SwiftUI
 
-struct ContentView: View {
+struct ShopView: View {
+    
+    @StateObject var viewModel: ShopViewModel
+    
     var body: some View {
         NavigationStack {
             Text("ShopApp")
