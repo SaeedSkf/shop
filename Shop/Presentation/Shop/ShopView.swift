@@ -13,5 +13,5 @@ struct ShopView: View {
 }
 
 #Preview {
-    ContentView()
+//    ShopView()
 }
