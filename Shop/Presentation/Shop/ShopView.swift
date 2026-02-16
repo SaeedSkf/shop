@@ -49,6 +49,8 @@ struct ShopView: View {
             ShopGridSectionView(section: section)
         case let section as FixedBannerSection:
             FixedBannerSectionView(section: section)
+        case let section as FAQSection:
+            FAQSectionView(section: section)
         default:
             EmptyView()
         }

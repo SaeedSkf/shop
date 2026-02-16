@@ -11,9 +11,14 @@ struct DefaultSectionFactory: SectionFactory {
         let categoriesLookup = Dictionary(uniqueKeysWithValues: response.categories.map { ($0.id, $0) })
         let shopsLookup = Dictionary(uniqueKeysWithValues: response.shops.map { ($0.id, $0) })
 
-        return response.home.sections.enumerated().compactMap { index, section in
+        var sections: [any ShopSection] = response.home.sections.enumerated().compactMap { index, section in
             makeSection(section, index: index, bannersLookup: bannersLookup, categoriesLookup: categoriesLookup, shopsLookup: shopsLookup)
         }
+
+        let faqSection = makeFAQSection(from: response.home.faq)
+        sections.append(faqSection)
+
+        return sections
     }
 
     // MARK: - Section Dispatch
@@ -52,6 +57,19 @@ struct DefaultSectionFactory: SectionFactory {
         default:
             return nil
         }
+    }
+
+    // MARK: - FAQ
+
+    private func makeFAQSection(from dto: FAQDTO) -> FAQSection {
+        let items = dto.sections.enumerated().map { index, item in
+            FAQItem(
+                id: "\(dto.id)-\(index)",
+                title: item.title,
+                answer: item.description
+            )
+        }
+        return FAQSection(id: dto.id, title: dto.title, items: items)
     }
 
     // MARK: - Resolvers
