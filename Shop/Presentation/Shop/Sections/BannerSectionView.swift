@@ -43,10 +43,12 @@ struct BannerSectionView: View {
     private var pageIndicator: some View {
         HStack(spacing: 6) {
             ForEach(section.banners) { banner in
-                Circle()
-                    .fill(banner.id == currentBannerID ? Color.accentColor : Color.secondary.opacity(0.3))
-                    .frame(width: 7, height: 7)
+                let isSelected = banner.id == currentBannerID
+                Capsule()
+                    .fill(isSelected ? Color.primaryPersian : Color.lightestGray)
+                    .frame(width: isSelected ? 12 : 6, height: 6)
             }
         }
+        .animation(.easeInOut(duration: 0.3), value: currentBannerID)
     }
 }
