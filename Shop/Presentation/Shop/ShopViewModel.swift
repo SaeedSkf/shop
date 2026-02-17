@@ -1,7 +1,7 @@
 import Combine
 import Foundation
 
-final class ShopViewModel: ObservableObject {
+final class ShopViewModel {
 
     @Published private(set) var sections: [any ShopSection] = []
     @Published private(set) var isLoading = false
@@ -13,16 +13,19 @@ final class ShopViewModel: ObservableObject {
         self.fetchShopUseCase = fetchShopUseCase
     }
 
-    func loadSections() async {
-        isLoading = true
-        errorMessage = nil
+    func loadSections() {
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            self.isLoading = true
+            self.errorMessage = nil
 
-        do {
-            sections = try await fetchShopUseCase.execute()
-        } catch {
-            errorMessage = error.localizedDescription
+            do {
+                self.sections = try await self.fetchShopUseCase.execute()
+            } catch {
+                self.errorMessage = error.localizedDescription
+            }
+
+            self.isLoading = false
         }
-
-        isLoading = false
     }
 }
