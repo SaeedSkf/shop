@@ -7,7 +7,7 @@ final class ShopViewController: UIViewController {
 
     private let viewModel: ShopViewModel
     private var cancellables = Set<AnyCancellable>()
-    private var sections: [any ShopSection] = []
+    private var sections: [any ShopSectionSnapshotProviding] = []
     private var expandedFAQItems = Set<String>()
 
     private lazy var collectionView = makeCollectionView()
@@ -136,31 +136,28 @@ final class ShopViewController: UIViewController {
         return UICollectionViewCompositionalLayout(sectionProvider: {
             [weak self] (sectionIndex: Int, environment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
             guard let self,
-                  let sectionId = self.dataSource.sectionIdentifier(for: sectionIndex) else { return nil }
+                  let sectionId = self.dataSource.sectionIdentifier(for: sectionIndex),
+                  let layoutSection = ShopLayoutFactory.layoutSection(for: sectionId, environment: environment) else
+            { return nil }
 
-            switch sectionId {
-            case .banner:
-                let section = ShopLayoutFactory.bannerSection(environment: environment)
-                section.visibleItemsInvalidationHandler = { [weak self] _, offset, env in
-                    guard let self, env.container.contentSize.width > 0 else { return }
-                    let page = Int(round(offset.x / env.container.contentSize.width))
-                    guard let indicator = self.collectionView.supplementaryView(
-                        forElementKind: ShopLayoutFactory.pageIndicatorKind,
-                        at: IndexPath(item: 0, section: sectionIndex)
-                    ) as? PageIndicatorReusableView else { return }
-                    indicator.setCurrentPage(page, animated: true)
-                }
-                return section
-            case .category:
-                return ShopLayoutFactory.categorySection(environment: environment)
-            case .shopGrid:
-                return ShopLayoutFactory.shopGridSection(environment: environment)
-            case .fixedBanner:
-                return ShopLayoutFactory.fixedBannerSection(environment: environment)
-            case .faq:
-                return ShopLayoutFactory.faqSection(environment: environment)
+            if case .banner = sectionId {
+                updatePageIndicatorView(sectionIndex: sectionIndex, layoutSection: layoutSection)
             }
+            
+            return layoutSection
         }, configuration: config)
+    }
+    
+    private func updatePageIndicatorView(sectionIndex: Int, layoutSection: NSCollectionLayoutSection) {
+        layoutSection.visibleItemsInvalidationHandler = { [weak self] _, offset, env in
+            guard let self, env.container.contentSize.width > 0 else { return }
+            let page = Int(round(offset.x / env.container.contentSize.width))
+            guard let indicator = self.collectionView.supplementaryView(
+                forElementKind: ShopLayoutFactory.pageIndicatorKind,
+                at: IndexPath(item: 0, section: sectionIndex)
+            ) as? PageIndicatorReusableView else { return }
+            indicator.setCurrentPage(page, animated: true)
+        }
     }
 
     // MARK: - Data Source
@@ -186,8 +183,9 @@ final class ShopViewController: UIViewController {
         let fixedBannerReg = UICollectionView.CellRegistration<FixedBannerCell, ShopItemIdentifier> {
             [weak self] (cell: FixedBannerCell, _: IndexPath, item: ShopItemIdentifier) in
             if case .fixedBanners(let id) = item,
-               let section = self?.findSection(id: id) as? FixedBannerSection {
-                cell.configure(with: section.banners)
+               let section = self?.findSection(id: id),
+               let banners = section.fixedBannerData {
+                cell.configure(with: banners)
             }
         }
 
@@ -220,30 +218,10 @@ final class ShopViewController: UIViewController {
             elementKind: UICollectionView.elementKindSectionHeader
         ) { [weak self] (view: SectionHeaderReusableView, _: String, indexPath: IndexPath) in
             guard let self,
-                  let sectionId = self.dataSource.sectionIdentifier(for: indexPath.section) else { return }
-
-            let seeAll = NSLocalizedString("see_all", comment: "")
-
-            switch sectionId {
-            case .banner:
-                break
-            case .category(let id):
-                if let s = self.findSection(id: id) as? CategorySection {
-                    view.configure(title: s.title, actionTitle: seeAll)
-                }
-            case .shopGrid(let id):
-                if let s = self.findSection(id: id) as? ShopGridSection {
-                    view.configure(title: s.title, actionTitle: seeAll)
-                }
-            case .fixedBanner(let id):
-                if let s = self.findSection(id: id) as? FixedBannerSection {
-                    view.configure(title: s.title)
-                }
-            case .faq(let id):
-                if let s = self.findSection(id: id) as? FAQSection {
-                    view.configure(title: s.title)
-                }
-            }
+                  let sectionId = self.dataSource.sectionIdentifier(for: indexPath.section),
+                  let section = self.findSection(id: sectionId.sectionId),
+                  let title = section.headerTitle else { return }
+            view.configure(title: title, actionTitle: section.headerActionTitle)
         }
 
         let indicatorReg = UICollectionView.SupplementaryRegistration<PageIndicatorReusableView>(
@@ -251,9 +229,9 @@ final class ShopViewController: UIViewController {
         ) { [weak self] (view: PageIndicatorReusableView, _: String, indexPath: IndexPath) in
             guard let self,
                   let sectionId = self.dataSource.sectionIdentifier(for: indexPath.section),
-                  case .banner(let id) = sectionId,
-                  let section = self.findSection(id: id) as? BannerSection else { return }
-            view.configure(numberOfPages: section.banners.count, currentPage: 0)
+                  let section = self.findSection(id: sectionId.sectionId),
+                  let pageCount = section.pageIndicatorCount else { return }
+            view.configure(numberOfPages: pageCount, currentPage: 0)
         }
 
         ds.supplementaryViewProvider = {
@@ -275,39 +253,9 @@ final class ShopViewController: UIViewController {
 
     private func applySnapshot() {
         var snapshot = NSDiffableDataSourceSnapshot<ShopSectionIdentifier, ShopItemIdentifier>()
-
         for section in sections {
-            switch section {
-            case let s as BannerSection:
-                let id = ShopSectionIdentifier.banner(id: s.id)
-                snapshot.appendSections([id])
-                snapshot.appendItems(s.banners.map { .banner($0) }, toSection: id)
-
-            case let s as CategorySection:
-                let id = ShopSectionIdentifier.category(id: s.id)
-                snapshot.appendSections([id])
-                snapshot.appendItems(s.categories.map { .category($0) }, toSection: id)
-
-            case let s as ShopGridSection:
-                let id = ShopSectionIdentifier.shopGrid(id: s.id)
-                snapshot.appendSections([id])
-                snapshot.appendItems(s.shops.map { .shop($0) }, toSection: id)
-
-            case let s as FixedBannerSection:
-                let id = ShopSectionIdentifier.fixedBanner(id: s.id)
-                snapshot.appendSections([id])
-                snapshot.appendItems([.fixedBanners(id: s.id)], toSection: id)
-
-            case let s as FAQSection:
-                let id = ShopSectionIdentifier.faq(id: s.id)
-                snapshot.appendSections([id])
-                snapshot.appendItems(s.items.map { .faq($0) }, toSection: id)
-
-            default:
-                break
-            }
+            section.appendToSnapshot(&snapshot)
         }
-
         dataSource.apply(snapshot, animatingDifferences: false)
     }
 
@@ -316,8 +264,8 @@ final class ShopViewController: UIViewController {
     private func bindViewModel() {
         viewModel.$sections
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] sections in
-                self?.sections = sections
+            .sink { [weak self] domainSections in
+                self?.sections = domainSections.compactMap { $0 as? (any ShopSectionSnapshotProviding) }
                 self?.applySnapshot()
             }
             .store(in: &cancellables)
@@ -362,7 +310,7 @@ final class ShopViewController: UIViewController {
 
     // MARK: - Helpers
 
-    private func findSection(id: String) -> (any ShopSection)? {
+    private func findSection(id: String) -> (any ShopSectionSnapshotProviding)? {
         sections.first { $0.id == id }
     }
 

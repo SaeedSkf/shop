@@ -4,6 +4,24 @@ enum ShopLayoutFactory {
 
     static let pageIndicatorKind = "page-indicator"
 
+    static func layoutSection(
+        for identifier: ShopSectionIdentifier,
+        environment: NSCollectionLayoutEnvironment
+    ) -> NSCollectionLayoutSection? {
+        switch identifier {
+        case .banner:
+            return bannerSection(environment: environment)
+        case .category:
+            return categorySection(environment: environment)
+        case .shopGrid:
+            return shopGridSection(environment: environment)
+        case .fixedBanner:
+            return fixedBannerSection(environment: environment)
+        case .faq:
+            return faqSection(environment: environment)
+        }
+    }
+
     // MARK: - Banner (horizontal paging + page indicator footer)
 
     static func bannerSection(environment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection {
