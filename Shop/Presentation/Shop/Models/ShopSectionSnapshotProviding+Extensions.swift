@@ -6,7 +6,7 @@ extension BannerSection: ShopSectionSnapshotProviding {
     func appendToSnapshot(_ snapshot: inout NSDiffableDataSourceSnapshot<ShopSectionIdentifier, ShopItemIdentifier>) {
         let sectionId = sectionIdentifier
         snapshot.appendSections([sectionId])
-        snapshot.appendItems(banners.map { .banner($0) }, toSection: sectionId)
+        snapshot.appendItems(banners.map { .banner(sectionId: id, banner: $0) }, toSection: sectionId)
     }
 
     var sectionIdentifier: ShopSectionIdentifier { .banner(id: id) }

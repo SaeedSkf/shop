@@ -17,7 +17,7 @@ enum ShopSectionIdentifier: Hashable {
 }
 
 enum ShopItemIdentifier: Hashable {
-    case banner(Banner)
+    case banner(sectionId: String, banner: Banner)
     case category(Category)
     case shop(ShopItem)
     case fixedBanners(id: String)

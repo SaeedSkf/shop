@@ -180,7 +180,7 @@ final class ShopViewController: UIViewController {
     ) -> UICollectionViewDiffableDataSource<ShopSectionIdentifier, ShopItemIdentifier> {
         let bannerReg = UICollectionView.CellRegistration<BannerCell, ShopItemIdentifier> {
             (cell: BannerCell, _: IndexPath, item: ShopItemIdentifier) in
-            if case .banner(let banner) = item { cell.configure(with: banner) }
+            if case .banner(_, let banner) = item { cell.configure(with: banner) }
         }
 
         let categoryReg = UICollectionView.CellRegistration<CategoryCell, ShopItemIdentifier> {
