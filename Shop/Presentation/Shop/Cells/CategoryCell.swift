@@ -7,6 +7,8 @@ final class CategoryCell: UICollectionViewCell {
     private let iconContainerView: UIView = {
         let view = UIView()
         view.backgroundColor = .primaryLightest
+        view.layer.borderColor = UIColor.primaryLight.cgColor
+        view.layer.borderWidth = 1
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
