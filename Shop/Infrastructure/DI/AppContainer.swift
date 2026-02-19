@@ -1,4 +1,5 @@
 import Foundation
+import SwiftData
 import Swinject
 
 final class AppContainer {
@@ -8,6 +9,7 @@ final class AppContainer {
     init() {
         container = Container()
         registerNetworking()
+        registerStorage()
         registerFeatures()
     }
 
@@ -18,11 +20,18 @@ final class AppContainer {
             URLSessionNetworkClient(baseURL: AppConfig.baseURL)
         }.inObjectScope(.container)
     }
-    
+
+    private func registerStorage() {
+        container.register(ModelContainer.self) { _ in
+            ModelContainer.makeAppContainer()
+        }.inObjectScope(.container)
+    }
+
     // MARK: - Features
 
     private func registerFeatures() {
         ShopAssembly().assemble(container: container)
+        SearchAssembly().assemble(container: container)
     }
 }
 
