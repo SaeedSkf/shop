@@ -1,6 +1,6 @@
 import Foundation
 
-struct Banner: Identifiable {
+struct Banner: Identifiable, Hashable {
     let id: String
     let imageURL: URL
 }
