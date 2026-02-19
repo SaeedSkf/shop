@@ -2,3 +2,6 @@
 "search_placeholder" = "جستجو فروشگاه یا برند...";
 "shop_title" = "فروشگاه";
 "retry" = "تلاش مجدد";
+"search_title" = "جستجو";
+"recent_searches" = "جستجوهای اخیر";
+"search_no_results" = "نتیجه‌ای یافت نشد";

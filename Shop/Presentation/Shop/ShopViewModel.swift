@@ -7,6 +7,10 @@ final class ShopViewModel {
     @Published private(set) var isLoading = false
     @Published private(set) var errorMessage: String?
 
+    var allShops: [ShopItem] {
+        sections.compactMap { $0 as? ShopGridSection }.flatMap(\.shops)
+    }
+
     private let fetchShopUseCase: FetchShopUseCase
 
     init(fetchShopUseCase: FetchShopUseCase) {

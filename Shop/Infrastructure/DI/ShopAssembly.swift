@@ -22,6 +22,12 @@ struct ShopAssembly: Assembly {
             let repository = resolver.resolve(ShopRepository.self)!
             return DefaultFetchShopUseCase(repository: repository)
         }
+        
+        container.register(ShopRouter.self) { resolver in
+            let searchUseCase = resolver.resolve(SearchShopsUseCase.self)!
+            let historyUseCase = resolver.resolve(ManageSearchHistoryUseCase.self)!
+            return DefaultShopRouter(searchShopsUseCase: searchUseCase, manageHistoryUseCase: historyUseCase)
+        }
 
         container.register(ShopViewModel.self) { resolver in
             let useCase = resolver.resolve(FetchShopUseCase.self)!

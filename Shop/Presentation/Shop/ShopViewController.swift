@@ -6,6 +6,7 @@ final class ShopViewController: UIViewController {
     // MARK: - Properties
 
     private let viewModel: ShopViewModel
+    private let router: ShopRouter
     private var cancellables = Set<AnyCancellable>()
     private var sections: [any ShopSectionSnapshotProviding] = []
     private var expandedFAQItems = Set<String>()
@@ -13,7 +14,12 @@ final class ShopViewController: UIViewController {
     private lazy var collectionView = makeCollectionView()
     private lazy var dataSource = makeDataSource(for: collectionView)
     private let activityIndicator = UIActivityIndicatorView(style: .large)
-    private let searchController = UISearchController(searchResultsController: nil)
+
+    private let searchBarButton: SearchBarButton = {
+        let button = SearchBarButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
 
     private let errorImageView: UIImageView = {
         let config = UIImage.SymbolConfiguration(pointSize: 48)
@@ -52,8 +58,9 @@ final class ShopViewController: UIViewController {
 
     // MARK: - Init
 
-    init(viewModel: ShopViewModel) {
+    init(viewModel: ShopViewModel, router: ShopRouter) {
         self.viewModel = viewModel
+        self.router = router
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -73,27 +80,31 @@ final class ShopViewController: UIViewController {
     private func setupUI() {
         view.backgroundColor = .systemBackground
         title = NSLocalizedString("shop_title", comment: "")
-        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationController?.navigationBar.prefersLargeTitles = false
+        navigationItem.largeTitleDisplayMode = .never
 
-        setupSearchController()
+        setupSearchBarButton()
         setupCollectionView()
         setupActivityIndicator()
         setupErrorView()
     }
 
-    private func setupSearchController() {
-        searchController.searchBar.placeholder = NSLocalizedString("search_placeholder", comment: "")
-        searchController.obscuresBackgroundDuringPresentation = false
-        navigationItem.searchController = searchController
-        navigationItem.hidesSearchBarWhenScrolling = false
-        definesPresentationContext = true
+    private func setupSearchBarButton() {
+        view.addSubview(searchBarButton)
+        searchBarButton.addTarget(self, action: #selector(searchTapped), for: .touchUpInside)
+
+        NSLayoutConstraint.activate([
+            searchBarButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 8),
+            searchBarButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            searchBarButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+        ])
     }
 
     private func setupCollectionView() {
         view.addSubview(collectionView)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            collectionView.topAnchor.constraint(equalTo: view.topAnchor),
+            collectionView.topAnchor.constraint(equalTo: searchBarButton.bottomAnchor, constant: 8),
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
@@ -314,8 +325,14 @@ final class ShopViewController: UIViewController {
         sections.first { $0.id == id }
     }
 
+    // MARK: - Actions
+
     @objc private func retryTapped() {
         viewModel.loadSections()
+    }
+
+    @objc private func searchTapped() {
+        router.showSearch(from: self, shops: viewModel.allShops)
     }
 
     private func toggleFAQ(_ item: FAQItem) {

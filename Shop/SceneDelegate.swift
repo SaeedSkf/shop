@@ -13,7 +13,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = scene as? UIWindowScene else { return }
 
         let viewModel = container.resolve(ShopViewModel.self)
-        let shopVC = ShopViewController(viewModel: viewModel)
+        let router = container.resolve(ShopRouter.self)
+        let shopVC = ShopViewController(viewModel: viewModel, router: router)
+
         let navController = UINavigationController(rootViewController: shopVC)
 
         window = UIWindow(windowScene: windowScene)
