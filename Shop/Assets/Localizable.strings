@@ -5,3 +5,4 @@
 "search_title" = "جستجو";
 "recent_searches" = "جستجوهای اخیر";
 "search_no_results" = "نتیجه‌ای یافت نشد";
+"search_hint_format" = "جستجو برای «%@»";
