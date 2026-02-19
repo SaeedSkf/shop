@@ -7,7 +7,11 @@ final class ShopGridCell: UICollectionViewCell {
         view.backgroundColor = .deactiveGray
         view.layer.borderColor = UIColor.deviderGray.cgColor
         view.layer.borderWidth = 1
-        view.layer.cornerRadius = 12
+        view.layer.cornerRadius = 10
+        view.layer.shadowColor = UIColor.black.cgColor
+        view.layer.shadowOffset = CGSize(width: 0, height: 2)
+        view.layer.shadowRadius = 4
+        view.layer.shadowOpacity = 0.08
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -21,7 +25,7 @@ final class ShopGridCell: UICollectionViewCell {
 
     private let titleLabel: UILabel = {
         let label = UILabel()
-        label.font = .appSubtitle1
+        label.font = .appCaption
         label.textColor = .darkGray
         label.textAlignment = .center
         label.numberOfLines = 1

@@ -94,7 +94,7 @@ final class ShopViewController: UIViewController {
         searchBarButton.addTarget(self, action: #selector(searchTapped), for: .touchUpInside)
 
         NSLayoutConstraint.activate([
-            searchBarButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 8),
+            searchBarButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
             searchBarButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             searchBarButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
         ])
@@ -104,7 +104,7 @@ final class ShopViewController: UIViewController {
         view.addSubview(collectionView)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            collectionView.topAnchor.constraint(equalTo: searchBarButton.bottomAnchor, constant: 8),
+            collectionView.topAnchor.constraint(equalTo: searchBarButton.bottomAnchor, constant: 16),
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
@@ -142,7 +142,7 @@ final class ShopViewController: UIViewController {
 
     private func createLayout() -> UICollectionViewCompositionalLayout {
         let config = UICollectionViewCompositionalLayoutConfiguration()
-        config.interSectionSpacing = 24
+        config.interSectionSpacing = 28
 
         return UICollectionViewCompositionalLayout(sectionProvider: {
             [weak self] (sectionIndex: Int, environment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
@@ -160,9 +160,11 @@ final class ShopViewController: UIViewController {
     }
     
     private func updatePageIndicatorView(sectionIndex: Int, layoutSection: NSCollectionLayoutSection) {
-        layoutSection.visibleItemsInvalidationHandler = { [weak self] _, offset, env in
-            guard let self, env.container.contentSize.width > 0 else { return }
-            let page = Int(round(offset.x / env.container.contentSize.width))
+        layoutSection.visibleItemsInvalidationHandler = { [weak self] _, offset, _ in
+            guard let self else { return }
+            let pageWidth = self.collectionView.bounds.width
+            guard pageWidth > 0 else { return }
+            let page = Int(round(offset.x / pageWidth))
             guard let indicator = self.collectionView.supplementaryView(
                 forElementKind: ShopLayoutFactory.pageIndicatorKind,
                 at: IndexPath(item: 0, section: sectionIndex)

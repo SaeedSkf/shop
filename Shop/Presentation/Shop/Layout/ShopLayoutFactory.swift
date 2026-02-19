@@ -4,6 +4,9 @@ enum ShopLayoutFactory {
 
     static let pageIndicatorKind = "page-indicator"
 
+    private static let horizontalInset: CGFloat = 20
+    private static let categoryItemSize: CGFloat = 64
+
     static func layoutSection(
         for identifier: ShopSectionIdentifier,
         environment: NSCollectionLayoutEnvironment
@@ -24,25 +27,31 @@ enum ShopLayoutFactory {
 
     // MARK: - Banner (horizontal paging + page indicator footer)
 
+    private static let bannerHeight: CGFloat = 110
+    private static let bannerPageIndicatorHeight: CGFloat = 20
+
     static func bannerSection(environment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection {
+        let containerWidth = environment.container.contentSize.width
+        let useAbsoluteWidth = containerWidth > 0
         let itemSize = NSCollectionLayoutSize(
-            widthDimension: .fractionalWidth(1.0),
-            heightDimension: .fractionalHeight(1.0)
+            widthDimension: useAbsoluteWidth ? .absolute(containerWidth) : .fractionalWidth(1.0),
+            heightDimension: .absolute(bannerHeight)
         )
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
 
         let groupSize = NSCollectionLayoutSize(
-            widthDimension: .fractionalWidth(1.0),
-            heightDimension: .fractionalWidth(1.0 / 3.0)
+            widthDimension: useAbsoluteWidth ? .absolute(containerWidth) : .fractionalWidth(1.0),
+            heightDimension: .absolute(bannerHeight)
         )
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
 
         let section = NSCollectionLayoutSection(group: group)
         section.orthogonalScrollingBehavior = .groupPaging
+        section.contentInsets = .zero
 
         let footerSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1.0),
-            heightDimension: .absolute(20)
+            heightDimension: .absolute(bannerPageIndicatorHeight)
         )
         let footer = NSCollectionLayoutBoundarySupplementaryItem(
             layoutSize: footerSize,
@@ -58,21 +67,21 @@ enum ShopLayoutFactory {
 
     static func categorySection(environment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection {
         let itemSize = NSCollectionLayoutSize(
-            widthDimension: .absolute(72),
-            heightDimension: .estimated(100)
+            widthDimension: .absolute(categoryItemSize),
+            heightDimension: .estimated(90)
         )
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
 
         let groupSize = NSCollectionLayoutSize(
-            widthDimension: .absolute(72),
-            heightDimension: .estimated(100)
+            widthDimension: .absolute(categoryItemSize),
+            heightDimension: .estimated(90)
         )
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
 
         let section = NSCollectionLayoutSection(group: group)
         section.orthogonalScrollingBehavior = .continuous
-        section.interGroupSpacing = 8
-        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16)
+        section.interGroupSpacing = 16
+        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: horizontalInset, bottom: 0, trailing: horizontalInset)
         section.boundarySupplementaryItems = [makeHeader()]
 
         return section
@@ -80,9 +89,17 @@ enum ShopLayoutFactory {
 
     // MARK: - Shop Grid (4 columns)
 
+    private static let shopGridSpacing: CGFloat = 12
+    private static let shopGridColumns = 4
+
     static func shopGridSection(environment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection {
+        let containerWidth = environment.container.contentSize.width
+        let contentWidth = containerWidth - (horizontalInset * 2)
+        let totalItemSpacing = shopGridSpacing * CGFloat(shopGridColumns - 1)
+        let itemWidth = (contentWidth - totalItemSpacing) / CGFloat(shopGridColumns)
+
         let itemSize = NSCollectionLayoutSize(
-            widthDimension: .fractionalWidth(1.0),
+            widthDimension: .absolute(itemWidth),
             heightDimension: .estimated(120)
         )
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
@@ -91,12 +108,12 @@ enum ShopLayoutFactory {
             widthDimension: .fractionalWidth(1.0),
             heightDimension: .estimated(120)
         )
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, repeatingSubitem: item, count: 4)
-        group.interItemSpacing = .fixed(12)
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, repeatingSubitem: item, count: shopGridColumns)
+        group.interItemSpacing = .fixed(shopGridSpacing)
 
         let section = NSCollectionLayoutSection(group: group)
-        section.interGroupSpacing = 16
-        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16)
+        section.interGroupSpacing = shopGridSpacing
+        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: horizontalInset, bottom: 0, trailing: horizontalInset)
         section.boundarySupplementaryItems = [makeHeader()]
 
         return section
@@ -118,7 +135,7 @@ enum ShopLayoutFactory {
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
 
         let section = NSCollectionLayoutSection(group: group)
-        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16)
+        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: horizontalInset, bottom: 0, trailing: horizontalInset)
         section.boundarySupplementaryItems = [makeHeader()]
 
         return section
@@ -129,18 +146,18 @@ enum ShopLayoutFactory {
     static func faqSection(environment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection {
         let itemSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1.0),
-            heightDimension: .estimated(50)
+            heightDimension: .estimated(60)
         )
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
 
         let groupSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1.0),
-            heightDimension: .estimated(50)
+            heightDimension: .estimated(60)
         )
         let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
 
         let section = NSCollectionLayoutSection(group: group)
-        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16)
+        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: horizontalInset, bottom: 0, trailing: horizontalInset)
         section.boundarySupplementaryItems = [makeHeader()]
 
         return section

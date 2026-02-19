@@ -4,14 +4,14 @@ final class SectionHeaderReusableView: UICollectionReusableView {
 
     private let titleLabel: UILabel = {
         let label = UILabel()
-        label.font = .appHeadline
+        label.font = .appTitle3
         label.textColor = .boldGray
         return label
     }()
 
     private let actionButton: UIButton = {
         let button = UIButton(type: .system)
-        button.titleLabel?.font = .appCaption
+        button.titleLabel?.font = .appCallout
         button.setTitleColor(.primaryPersian, for: .normal)
         button.isHidden = true
         return button

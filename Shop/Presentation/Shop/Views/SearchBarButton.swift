@@ -29,7 +29,7 @@ final class SearchBarButton: UIControl {
         backgroundColor = .white
         layer.borderColor = UIColor.styleInfo.cgColor
         layer.borderWidth = 1
-        layer.cornerRadius = 6
+        layer.cornerRadius = 10
 
         let stack = UIStackView(arrangedSubviews: [iconView, placeholderLabel])
         stack.axis = .horizontal
@@ -45,7 +45,7 @@ final class SearchBarButton: UIControl {
             stack.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12),
             stack.topAnchor.constraint(equalTo: topAnchor),
             stack.bottomAnchor.constraint(equalTo: bottomAnchor),
-            heightAnchor.constraint(equalToConstant: 44),
+            heightAnchor.constraint(equalToConstant: 48),
         ])
     }
 

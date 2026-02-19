@@ -5,7 +5,7 @@ final class PageIndicatorReusableView: UICollectionReusableView {
     private let stackView: UIStackView = {
         let stack = UIStackView()
         stack.axis = .horizontal
-        stack.spacing = 4
+        stack.spacing = 8
         stack.alignment = .center
         stack.translatesAutoresizingMaskIntoConstraints = false
         return stack

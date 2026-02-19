@@ -4,7 +4,7 @@ final class FAQCell: UICollectionViewCell {
 
     private let questionLabel: UILabel = {
         let label = UILabel()
-        label.font = .appSubheadline
+        label.font = .appCallout
         label.numberOfLines = 0
         label.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         return label
@@ -22,7 +22,7 @@ final class FAQCell: UICollectionViewCell {
 
     private let answerLabel: UILabel = {
         let label = UILabel()
-        label.font = .appCaption
+        label.font = .appFootnote
         label.textColor = .secondaryLabel
         label.numberOfLines = 0
         label.isHidden = true
@@ -51,7 +51,7 @@ final class FAQCell: UICollectionViewCell {
 
         let mainStack = UIStackView(arrangedSubviews: [questionRow, answerLabel])
         mainStack.axis = .vertical
-        mainStack.spacing = 12
+        mainStack.spacing = 8
         mainStack.translatesAutoresizingMaskIntoConstraints = false
 
         contentView.addSubview(mainStack)
@@ -69,7 +69,7 @@ final class FAQCell: UICollectionViewCell {
             separatorView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             separatorView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             separatorView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-            separatorView.heightAnchor.constraint(equalToConstant: 0.5),
+            separatorView.heightAnchor.constraint(equalToConstant: 1),
         ])
     }
 
