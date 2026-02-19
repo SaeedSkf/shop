@@ -5,6 +5,7 @@ enum ShopLayoutFactory {
     static let pageIndicatorKind = "page-indicator"
 
     private static let horizontalInset: CGFloat = 20
+    private static let headerToContentSpacing: CGFloat = 16
     private static let categoryItemSize: CGFloat = 64
 
     static func layoutSection(
@@ -81,7 +82,7 @@ enum ShopLayoutFactory {
         let section = NSCollectionLayoutSection(group: group)
         section.orthogonalScrollingBehavior = .continuous
         section.interGroupSpacing = 16
-        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: horizontalInset, bottom: 0, trailing: horizontalInset)
+        section.contentInsets = NSDirectionalEdgeInsets(top: headerToContentSpacing, leading: horizontalInset, bottom: 0, trailing: horizontalInset)
         section.boundarySupplementaryItems = [makeHeader()]
 
         return section
@@ -113,7 +114,7 @@ enum ShopLayoutFactory {
 
         let section = NSCollectionLayoutSection(group: group)
         section.interGroupSpacing = shopGridSpacing
-        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: horizontalInset, bottom: 0, trailing: horizontalInset)
+        section.contentInsets = NSDirectionalEdgeInsets(top: headerToContentSpacing, leading: horizontalInset, bottom: 0, trailing: horizontalInset)
         section.boundarySupplementaryItems = [makeHeader()]
 
         return section
@@ -135,7 +136,7 @@ enum ShopLayoutFactory {
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
 
         let section = NSCollectionLayoutSection(group: group)
-        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: horizontalInset, bottom: 0, trailing: horizontalInset)
+        section.contentInsets = NSDirectionalEdgeInsets(top: headerToContentSpacing, leading: horizontalInset, bottom: 0, trailing: horizontalInset)
         section.boundarySupplementaryItems = [makeHeader()]
 
         return section
@@ -157,7 +158,7 @@ enum ShopLayoutFactory {
         let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
 
         let section = NSCollectionLayoutSection(group: group)
-        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: horizontalInset, bottom: 0, trailing: horizontalInset)
+        section.contentInsets = NSDirectionalEdgeInsets(top: headerToContentSpacing, leading: horizontalInset, bottom: 0, trailing: horizontalInset)
         section.boundarySupplementaryItems = [makeHeader()]
 
         return section
