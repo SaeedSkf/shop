@@ -1,5 +1,5 @@
 import Foundation
 
-protocol ShopRepository {
+protocol ShopRepository: Sendable {
     func fetchSections() async throws -> [any ShopSection]
 }

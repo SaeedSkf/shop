@@ -1,10 +1,10 @@
 import Foundation
 
-protocol ShopRemoteDataSource {
+protocol ShopRemoteDataSource: Sendable {
     func fetchShopResponse() async throws -> ShopResponseDTO
 }
 
-final class DefaultShopRemoteDataSource: ShopRemoteDataSource {
+final class DefaultShopRemoteDataSource: ShopRemoteDataSource, Sendable {
 
     private let networkClient: NetworkClient
 

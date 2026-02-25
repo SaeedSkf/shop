@@ -96,7 +96,7 @@ final class SearchResultCell: UITableViewCell {
 
     override func prepareForReuse() {
         super.prepareForReuse()
-        iconImageView.image = nil
+        iconImageView.cancelImageLoad()
         titleLabel.text = nil
         tagsLabel.text = nil
     }

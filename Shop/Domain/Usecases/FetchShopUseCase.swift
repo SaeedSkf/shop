@@ -1,10 +1,10 @@
 import Foundation
 
-protocol FetchShopUseCase {
+protocol FetchShopUseCase: Sendable {
     func execute() async throws -> [any ShopSection]
 }
 
-final class DefaultFetchShopUseCase: FetchShopUseCase {
+final class DefaultFetchShopUseCase: FetchShopUseCase, Sendable {
 
     private let repository: ShopRepository
 

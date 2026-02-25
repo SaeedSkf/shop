@@ -1,6 +1,6 @@
 import Foundation
 
-final class URLSessionNetworkClient: NetworkClient {
+final class URLSessionNetworkClient: NetworkClient, Sendable {
 
     private let baseURL: URL
     private let session: URLSession
@@ -16,7 +16,7 @@ final class URLSessionNetworkClient: NetworkClient {
         self.decoder = decoder
     }
 
-    func request<T: Decodable>(_ apiRequest: APIRequest) async throws -> T {
+    func request<T: Decodable & Sendable>(_ apiRequest: APIRequest) async throws -> T {
         let urlRequest = try buildURLRequest(from: apiRequest)
 
         let data: Data

@@ -1,6 +1,6 @@
 import Foundation
 
-struct APIRequest {
+struct APIRequest: Sendable {
     let path: String
     let method: HTTPMethod
     let queryItems: [URLQueryItem]?

@@ -6,3 +6,19 @@
 "recent_searches" = "جستجوهای اخیر";
 "search_no_results" = "نتیجه‌ای یافت نشد";
 "search_hint_format" = "جستجو برای «%@»";
+
+"error_invalid_url" = "آدرس درخواست نامعتبر است";
+"error_invalid_response" = "پاسخ سرور قابل پردازش نیست";
+"error_decoding_failed" = "داده‌های دریافتی قابل خواندن نیستند";
+"error_unauthorized" = "دسترسی غیرمجاز است";
+"error_not_found" = "اطلاعات مورد نظر یافت نشد";
+"error_too_many_requests" = "تعداد درخواست‌ها بیش از حد مجاز است. لطفاً کمی صبر کنید";
+"error_server" = "خطایی در سرور رخ داده است";
+"error_http_generic" = "خطای سرور (کد %d)";
+"error_no_internet" = "اتصال اینترنت برقرار نیست";
+"error_timeout" = "زمان انتظار به پایان رسید";
+"error_cancelled" = "درخواست لغو شد";
+"error_network_generic" = "خطا در برقراری ارتباط با سرور";
+"error_recovery_check_connection" = "لطفاً اتصال اینترنت خود را بررسی و دوباره تلاش کنید";
+"error_recovery_try_later" = "لطفاً دقایقی دیگر دوباره تلاش کنید";
+"error_recovery_try_again" = "لطفاً دوباره تلاش کنید";

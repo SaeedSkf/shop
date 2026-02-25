@@ -1,12 +1,12 @@
 import Foundation
 
-protocol ManageSearchHistoryUseCase {
+protocol ManageSearchHistoryUseCase: Sendable {
     func fetchRecentSearches() async -> [String]
     func deleteSearch(term: String) async
     func deleteAllSearches() async
 }
 
-final class DefaultManageSearchHistoryUseCase: ManageSearchHistoryUseCase {
+final class DefaultManageSearchHistoryUseCase: ManageSearchHistoryUseCase, Sendable {
 
     private let repository: SearchHistoryRepository
 

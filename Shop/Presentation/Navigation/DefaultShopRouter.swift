@@ -1,6 +1,6 @@
 import UIKit
 
-final class DefaultShopRouter: ShopRouter {
+final class DefaultShopRouter: ShopRouter, Sendable {
 
     private let searchShopsUseCase: SearchShopsUseCase
     private let manageHistoryUseCase: ManageSearchHistoryUseCase

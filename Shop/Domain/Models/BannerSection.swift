@@ -1,6 +1,6 @@
 import Foundation
 
-struct BannerSection: ShopSection {
+struct BannerSection: ShopSection, Sendable {
     let id: String
     let banners: [Banner]
 }

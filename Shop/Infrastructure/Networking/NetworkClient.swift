@@ -1,5 +1,5 @@
 import Foundation
 
-protocol NetworkClient {
-    func request<T: Decodable>(_ apiRequest: APIRequest) async throws -> T
+protocol NetworkClient: Sendable {
+    func request<T: Decodable & Sendable>(_ apiRequest: APIRequest) async throws -> T
 }

@@ -69,7 +69,7 @@ final class ShopGridCell: UICollectionViewCell {
 
     override func prepareForReuse() {
         super.prepareForReuse()
-        iconImageView.image = nil
+        iconImageView.cancelImageLoad()
         titleLabel.text = nil
     }
 }

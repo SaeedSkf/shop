@@ -1,6 +1,6 @@
 import Foundation
 
-protocol SectionFactory {
+protocol SectionFactory: Sendable {
     func makeSections(from response: ShopResponseDTO) -> [any ShopSection]
 }
 

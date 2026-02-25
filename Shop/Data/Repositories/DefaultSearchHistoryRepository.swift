@@ -1,6 +1,6 @@
 import Foundation
 
-final class DefaultSearchHistoryRepository: SearchHistoryRepository {
+final class DefaultSearchHistoryRepository: SearchHistoryRepository, Sendable {
 
     private let localDataSource: SearchHistoryLocalDataSource
 

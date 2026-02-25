@@ -1,10 +1,10 @@
 import Foundation
 
-protocol SearchShopsUseCase {
+protocol SearchShopsUseCase: Sendable {
     func execute(query: String, in shops: [ShopItem]) async -> [ShopItem]
 }
 
-final class DefaultSearchShopsUseCase: SearchShopsUseCase {
+final class DefaultSearchShopsUseCase: SearchShopsUseCase, Sendable {
 
     private let historyRepository: SearchHistoryRepository
     private static let minCharacters = 3

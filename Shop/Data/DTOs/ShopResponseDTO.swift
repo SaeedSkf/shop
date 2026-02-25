@@ -1,6 +1,6 @@
 import Foundation
 
-struct ShopResponseDTO: Decodable {
+struct ShopResponseDTO: Decodable, Sendable {
     let home: HomeDTO
     let categories: [CategoryDTO]
     let shops: [ShopItemDTO]
@@ -9,38 +9,38 @@ struct ShopResponseDTO: Decodable {
     let labels: [LabelDTO]
 }
 
-struct HomeDTO: Decodable {
+struct HomeDTO: Decodable, Sendable {
     let search: Bool
     let faq: FAQDTO
     let sections: [HomeSectionDTO]
 }
 
-struct FAQDTO: Decodable {
+struct FAQDTO: Decodable, Sendable {
     let id: String
     let title: String
     let sections: [FAQItemDTO]
 }
 
-struct FAQItemDTO: Decodable {
+struct FAQItemDTO: Decodable, Sendable {
     let title: String
     let description: String
 }
 
-struct HomeSectionDTO: Decodable {
+struct HomeSectionDTO: Decodable, Sendable {
     let title: String?
     let type: String
     let subType: String?
     let list: [String]
 }
 
-struct CategoryDTO: Decodable {
+struct CategoryDTO: Decodable, Sendable {
     let id: String
     let title: String
     let iconUrl: String
     let status: String
 }
 
-struct ShopItemDTO: Decodable {
+struct ShopItemDTO: Decodable, Sendable {
     let id: String
     let title: String
     let iconUrl: String
@@ -53,24 +53,24 @@ struct ShopItemDTO: Decodable {
     let status: String
 }
 
-struct AboutDTO: Decodable {
+struct AboutDTO: Decodable, Sendable {
     let title: String
     let description: String
 }
 
-struct BannerDTO: Decodable {
+struct BannerDTO: Decodable, Sendable {
     let id: String
     let imageUrl: String
 }
 
-struct TagDTO: Decodable {
+struct TagDTO: Decodable, Sendable {
     let id: String
     let title: String
     let iconUrl: String
     let status: String
 }
 
-struct LabelDTO: Decodable {
+struct LabelDTO: Decodable, Sendable {
     let id: String
     let title: String
     let status: String

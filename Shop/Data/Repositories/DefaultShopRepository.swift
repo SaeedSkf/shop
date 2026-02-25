@@ -1,6 +1,6 @@
 import Foundation
 
-final class DefaultShopRepository: ShopRepository {
+final class DefaultShopRepository: ShopRepository, Sendable {
 
     private let remoteDataSource: ShopRemoteDataSource
     private let sectionFactory: SectionFactory

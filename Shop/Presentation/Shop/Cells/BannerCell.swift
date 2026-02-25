@@ -35,6 +35,6 @@ final class BannerCell: UICollectionViewCell {
 
     override func prepareForReuse() {
         super.prepareForReuse()
-        bannerImageView.image = nil
+        bannerImageView.cancelImageLoad()
     }
 }
